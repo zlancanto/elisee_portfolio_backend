@@ -18,6 +18,7 @@ app:
     email: ${MAIL_EMAIL}
   cors:
     allowed-origins:
+      - https://mihanportfolio.vercel.app/
       - http://localhost:5173
     allowed-methods:
         - POST
