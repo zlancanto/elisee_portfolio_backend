@@ -1,8 +1,10 @@
 package fr.mihan.portfolio.controller;
 
 import fr.mihan.portfolio.dto.ContactDTO;
+import fr.mihan.portfolio.dto.SuccessResponseDTO;
 import fr.mihan.portfolio.service.ContactMailService;
 import fr.mihan.portfolio.service.RateLimitService;
+import io.github.bucket4j.Bucket;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -26,24 +28,31 @@ public class ContactController {
         this.rateLimitService = rateLimitService;
     }
 
+    /**
+     * Envoi de message
+     * @param dto
+     * @param request
+     * @return response
+     * @throws MessagingException
+     */
     @PostMapping
-    public ResponseEntity<String> sendMessage(
+    public ResponseEntity<SuccessResponseDTO> sendMessage(
             @Valid @RequestBody ContactDTO dto,
             HttpServletRequest request
     ) throws MessagingException {
 
         final String ip = request.getRemoteAddr();
-        var bucket = rateLimitService.resolveBucket(ip);
+        Bucket bucket = rateLimitService.resolveBucket(ip);
 
         if (bucket.tryConsume(1)) {
             contactMailService.sendMail(dto);
-            return ResponseEntity.ok("Message envoyé avec succès.");
+            return ResponseEntity.ok(new SuccessResponseDTO("Message envoyé avec succès."));
         }
         else {
-            // Trop de requêtes !
-            return ResponseEntity
-                    .status(HttpStatus.TOO_MANY_REQUESTS)
-                    .body("Trop de messages envoyés. Veuillez réessayer plus tard.");
+            return new ResponseEntity<>(
+                    new SuccessResponseDTO("Trop de messages envoyés. Veuillez réessayer plus tard."),
+                    HttpStatus.TOO_MANY_REQUESTS
+            );
         }
     }
 }

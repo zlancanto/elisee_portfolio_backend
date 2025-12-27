@@ -9,9 +9,9 @@ import lombok.Getter;
  * Objet représentant le mail qu'un user m'envoie
  */
 public class ContactDTO extends EmailDTO {
-    @NotBlank
-    @NotNull
-    @Size(min = 2)
+    @NotBlank(message = "name est obligatoire")
+    @NotNull(message = "name doit pas être null")
+    @Size(min = 2, message = "Le subject doit faire au moins 2 caractères")
     @Getter
     private final String name;
 

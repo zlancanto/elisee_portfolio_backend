@@ -13,18 +13,18 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public abstract class EmailDTO {
-    @NotBlank
-    @NotNull
-    @Email
+    @NotBlank(message = "L'email est obligatoire")
+    @NotNull(message = "L'email doit pas être null")
+    @Email(message = "Format d'email invalide")
     protected final String email;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 3)
+    @NotBlank(message = "Le subject est obligatoire")
+    @NotNull(message = "Le subject doit pas être null")
+    @Size(min = 3, max = 60, message = "Le subject doit être compris entre 3 et 60 caractères")
     protected final String subject;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 10)
+    @NotBlank(message = "Le message est obligatoire")
+    @NotNull(message = "Le message doit pas être null")
+    @Size(min = 10, message = "Le subject doit faire au moins 10 caractères")
     protected final String message;
 }
