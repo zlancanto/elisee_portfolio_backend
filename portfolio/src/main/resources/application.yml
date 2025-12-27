@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: portfolio
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        SMTP:
+          auth: true
+          STARTTLS:
+            enable: true
+            required: true
+app:
+  contact:
+    email: ${MAIL_EMAIL}
+  cors:
+    allowed-origins:
+      - http://localhost:5173
+    allowed-methods:
+        - POST
+    allowed-headers:
+        - "*"
+    allow-credentials: true
