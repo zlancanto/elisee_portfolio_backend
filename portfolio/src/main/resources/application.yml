@@ -18,10 +18,13 @@ app:
     email: ${MAIL_EMAIL}
   cors:
     allowed-origins:
-      - https://mihanportfolio.vercel.app/
+      - https://mihanportfolio.vercel.app
       - http://localhost:5173
     allowed-methods:
         - POST
     allowed-headers:
         - "*"
     allow-credentials: true
+
+server:
+  port: ${PORT:8080}
